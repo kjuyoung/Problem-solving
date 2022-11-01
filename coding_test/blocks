@@ -4,48 +4,35 @@ def solution(blocks):
     left_high = [0]*len(blocks)
     right_high = [0]*len(blocks)
     sum_range = 0
-    same = 0
     
     high = [1,0]
     for i in range(0,len(blocks)-1):
         high[0], high[1] = i, blocks[i]
         same = 0
         for j in range(i+1,len(blocks)):
-            if high[1] < blocks[j]:
-                # same = 0
+            if (high[1] < blocks[j]) or (right_high[i] == 0 and high[1] == blocks[j]):
                 right_high[i] += 1
                 high[0], high[1] = j, blocks[j]
-            elif right_high[i] == 0 and high[1] == blocks[j]:
-                # same = 1
-                right_high[i] += 1
-                high[0], high[1] = j, blocks[j]
-                
-        
+
     print(right_high)
 
     high = [1,0]
     for i in range(len(blocks)-1, -1, -1):
         high[0], high[1] = i, blocks[i]
-        same = 0
         for j in range(i-1,-1,-1):
-            if high[1] < blocks[j]:
-                # same = 0
+            if (high[1] < blocks[j]) or (left_high[i] == 0 and high[1] == blocks[j]):
                 left_high[i] += 1
                 high[0], high[1] = j, blocks[j]
-            elif left_high[i] == 0 and high[1] == blocks[j]:
-                # same = 1
-                left_high[i] += 1
-                high[0], high[1] = j, blocks[j]
-        
+
     print(left_high)
 
     for i in range(len(blocks)):
         sum_range += (left_high[i] + right_high[i])
     print(sum_range)
-    # return sum_range
 
 if __name__ == '__main__':
     solution([3,5,4,2,4,4,6,5])
+    solution([3,5,4,2,5,4,6,5])
 
     # 3 5 4 2 4 4 6 5
 
