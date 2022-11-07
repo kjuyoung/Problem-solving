@@ -1,0 +1,76 @@
+import sys
+
+def solution():
+    sys.stdin = open('input.txt')
+
+    n=int(input())
+    n_list=[*map(int, input().split())]
+    m=int(input())
+    m_list=[*map(int, input().split())]
+    result=[]
+    hap=sum(n_list)
+    checked=[[0]*(hap+1) for _ in range(n+1)]
+
+    def scale(n, n_list, now, left, right, result):
+        diff = abs(left - right)
+        if diff not in result:
+            result.append(diff)
+        if now == n:
+            return 0
+        if checked[now][diff] == 0:
+            scale(n, n_list, now+1, left+n_list[now], right, result)
+            scale(n, n_list, now+1, left, right+n_list[now], result)
+            scale(n, n_list, now+1, left, right, result)
+            checked[now][diff] = 1
+            
+    scale(n, n_list, 0, 0, 0, result)
+
+    for i in m_list:
+        if i in result:
+            print('Y',end=' ')
+        else:
+            print('N',end=' ')
+        
+if __name__ == '__main__':
+    solution()
+    
+    
+=============================================
+
+
+import sys,math
+
+def solution():
+    sys.stdin = open('input.txt')
+    n=int(input())
+    n_list=[*map(int, input().split())]
+    m=int(input())
+    m_list=[*map(int, input().split())]
+    
+    hap=sum(n_list)
+    answer=[[0]*(hap+1) for _ in range(n)]
+    result = set()
+    answer[0][0] = True
+    answer[0][n_list[0]] = True
+
+    for i in range(1, n):
+        for j in range(hap+1):
+            if answer[i-1][j]:
+                answer[i][j] = True
+                answer[i][j + n_list[i]] = True
+
+    for i in range(n):
+        for j in range(hap+1):
+            if answer[i][j] == True:
+                result.add(j)
+
+    for i in m_list:
+        find = False
+        for j in result:
+            if j - i in result:
+                find = True
+                break
+        print('Y' if find else 'N', end=' ')
+        
+if __name__ == '__main__':
+    solution()
