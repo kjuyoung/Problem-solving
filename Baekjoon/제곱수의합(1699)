@@ -1,0 +1,62 @@
+// DP 미완성 코드
+반례
+4 2
+19 71
+9 100
+12 77
+75 51
+
+ans:
+143
+output:
+156
+
+import sys, math
+def solution():
+    sys.stdin = open('input.txt')
+    n, m = list(map(int, input().split()))
+    mat = [list(map(int, input().split())) for i in range(n)]
+    infi = 1061109567
+    dc = [-1, 0, 1]
+    dp = [[[infi]*3 for _ in range(m)] for _ in range(n)]
+
+    def sol(r, c, dir) -> int:
+        if c<0 or c>=m: return infi
+        if r==(n-1): return mat[r][c]
+        if dp[r][c][dir] != infi: return dp[r][c][dir]
+            
+        for i in range(3):
+            if i == dir: continue
+            dp[r][c][dir] = min(dp[r][c][dir], mat[r][c] + sol(r+1, c+dc[i], i))
+        return dp[r][c][dir]
+    
+    ans = infi
+    for i in range(m):
+        ans = min(ans, sol(0, i, 0))
+    print(ans)
+
+if __name__ == '__main__':
+    solution()
+    
+    
+    
+// Brute force
+    n, m = list(map(int, input().split()))
+    mat = [list(map(int, input().split())) for i in range(n)]
+    infi = 1061109567
+    dc = [-1, 0, 1]
+
+    def sol(r, c, dir) -> int:
+        if r==n: return 0
+        re = infi
+            
+        for i in range(3):
+            if i == dir: continue
+            if c+dc[i]<0 or c+dc[i]>=m: continue
+            re = min(re, mat[r][c] + sol(r+1, c+dc[i], i))
+        return re
+        
+    ans = infi
+    for i in range(m):
+        ans = min(ans, sol(0, i, -1))
+    print(ans)
