@@ -1,0 +1,10 @@
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        res = nums[0]
+        maxi, mini = 1, 1
+        
+        for n in nums:
+            vals = (n, n*maxi, n*mini)
+            maxi, mini = max(vals), min(vals)
+            res = max(res, maxi)
+        return res
